@@ -11,9 +11,9 @@
 - **Proposed task:** Remove only `refresh` while preserving other params, e.g. ``replaceState(..., `${url.pathname}${url.search}`)`` after deleting `refresh`.
 
 ## 3) Comment/Documentation Discrepancy Fix
-- **Issue:** README architecture mentions `app/api/projects/` routes, but the codebase has no `app/api/projects` endpoints.
-- **Why it matters:** New contributors may spend time looking for non-existent code paths.
-- **Proposed task:** Update README architecture section to match actual endpoints (`app/api/chat`, `app/api/chats`, `app/api/user`, auth routes), or add the missing projects API if intended.
+- **Issue:** This discrepancy was resolved: README now lists actual endpoints and no longer references `app/api/projects/`.
+- **Why it matters:** Keep the audit in sync with current repository state to avoid stale guidance.
+- **Proposed task:** Add a lightweight docs check in review/CI to confirm README endpoint references (`app/api/chat`, `app/api/chats`, `app/api/user`, auth routes) stay aligned with the codebase.
 
 ## 4) Test Improvement
 - **Issue:** No automated test currently guards URL query preservation behavior in the header refresh flow.
