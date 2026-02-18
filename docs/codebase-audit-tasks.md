@@ -8,7 +8,7 @@
 ## 2) Bug Fix
 - **Issue:** In `SearchParamsHandler`, URL cleanup after `refresh=session` does `replaceState(..., url.pathname)`, which drops all other query parameters.
 - **Why it matters:** Any unrelated query state is lost unintentionally, which can break deep links/feature flags.
-- **Proposed task:** Remove only `refresh` while preserving other params, e.g. `replaceState(..., `${url.pathname}${url.search}`)` after deleting `refresh`.
+- **Proposed task:** Remove only `refresh` while preserving other params, e.g. ``replaceState(..., `${url.pathname}${url.search}`)`` after deleting `refresh`.
 
 ## 3) Comment/Documentation Discrepancy Fix
 - **Issue:** README architecture mentions `app/api/projects/` routes, but the codebase has no `app/api/projects` endpoints.

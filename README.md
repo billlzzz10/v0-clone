@@ -145,7 +145,7 @@ This v0 clone includes:
 
 - `app/api/chat/route.ts` - Chat creation and messaging with ownership tracking
 - `app/api/chats/` - User's chat listing and individual chat access
-- `app/api/projects/` - User's project listing and individual project access
+- `app/api/user/route.ts` - Current authenticated user profile information
 - `app/(auth)/` - Authentication configuration and login/register pages
 
 ### Database
