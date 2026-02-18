@@ -34,7 +34,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary - CTA green with glow on hover
+        // Default/Primary - CTA green with glow on hover
+        default: `
+          bg-cta text-white
+          hover:bg-cta/90
+          hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]
+          active:scale-[0.98]
+        `,
+        // Primary - retained alias for compatibility
         primary: `
           bg-cta text-white
           hover:bg-cta/90
@@ -73,6 +80,7 @@ const buttonVariants = cva(
         `,
       },
       size: {
+        default: 'h-9 px-4 py-2 text-sm [&_svg]:size-4',
         sm: 'h-8 px-3 py-1.5 text-xs rounded-md [&_svg]:size-4',
         md: 'h-9 px-4 py-2 text-sm [&_svg]:size-4',
         lg: 'h-11 px-6 py-3 text-base [&_svg]:size-5',
@@ -81,8 +89,8 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+      variant: 'default',
+      size: 'default',
     },
   }
 )
