@@ -4,6 +4,7 @@ import './globals.css'
 import { StreamingProvider } from '@/contexts/streaming-context'
 import { SWRProvider } from '@/components/providers/swr-provider'
 import { SessionProvider } from '@/components/providers/session-provider'
+import { Analytics } from '@vercel/analytics/next'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -60,6 +61,7 @@ export default function RootLayout({
             <StreamingProvider>{children}</StreamingProvider>
           </SWRProvider>
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   )
