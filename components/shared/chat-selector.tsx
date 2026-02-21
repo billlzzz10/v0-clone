@@ -332,7 +332,7 @@ export function ChatSelector() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
                 <a
-                  href={`https://v0.app/chat/${currentChatId}`}
+                  href={`https://v0.dev/chat/${currentChatId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center"

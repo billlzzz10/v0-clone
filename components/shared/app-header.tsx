@@ -10,6 +10,7 @@ import { UserNav } from '@/components/user-nav'
 import { Button } from '@/components/ui/button'
 import { VercelIcon, GitHubIcon } from '@/components/ui/icons'
 import { DEPLOY_URL } from '@/lib/constants'
+import { getUrlWithoutRefreshParam } from '@/lib/url-utils'
 import { Info } from 'lucide-react'
 import {
   Dialog,
@@ -37,9 +38,8 @@ function SearchParamsHandler() {
       update()
 
       // Clean up URL without causing navigation
-      const url = new URL(window.location.href)
-      url.searchParams.delete('refresh')
-      window.history.replaceState({}, '', url.pathname)
+      const nextUrl = getUrlWithoutRefreshParam(window.location.href)
+      window.history.replaceState({}, '', nextUrl)
     }
   }, [searchParams, update])
 
@@ -146,7 +146,7 @@ export function AppHeader({ className = '' }: AppHeaderProps) {
             <p>
               This is a <strong>demo</strong> of a{' '}
               <a
-                href="https://v0.app"
+                href="https://v0.dev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
