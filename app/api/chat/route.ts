@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       const isApiKeyValid = await hasValidApiKey(session.user.id)
       if (isApiKeyValid) {
         userApiKey = await getApiKey(session.user.id)
-      }
+    if (session?.user?.id && await hasValidApiKey(session.user.id)) {
       userApiKey = await getApiKey(session.user.id)
     }
 
