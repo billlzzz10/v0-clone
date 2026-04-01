@@ -201,16 +201,25 @@ export function logApiKeyError(
     errorStack: error?.stack,
   }
 
-  // Sanitize context to never log actual API keys
-  const sanitized = { ...logData.context }
-  if ('apiKey' in sanitized) {
-    delete sanitized.apiKey
-  }
-  if ('api_key' in sanitized) {
-    delete sanitized.api_key
+  const redact = (value: unknown): unknown => {
+    if (Array.isArray(value)) {
+      return value.map(redact)
+    }
+    if (!value || typeof value !== 'object' || value instanceof Date || value instanceof Error) {
+      return value
+    }
+
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .filter(([key]) => !/^(api[_-]?key|authorization)$/i.test(key))
+        .map(([key, nested]) => [key, redact(nested)]),
+    )
   }
 
-  console.error('[API Key Error]', sanitized)
+  console.error('[API Key Error]', {
+    ...logData,
+    context: redact(logData.context),
+  })
 }
 
 /**
