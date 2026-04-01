@@ -83,10 +83,7 @@ export default async function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ApiKeyForm onApiKeyChange={() => {
-                  // Trigger refresh of status component
-                  window.location.reload()
-                }} />
+                <ApiKeyForm />
               </CardContent>
             </Card>
           </section>
