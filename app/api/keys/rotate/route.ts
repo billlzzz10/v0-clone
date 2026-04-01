@@ -16,7 +16,11 @@ export async function POST(request: NextRequest) {
       throw new ApiKeyError('UNAUTHORIZED')
     }
 
-    const { newApiKey } = await request.json()
+    const body = await request.json()
+    const newApiKey =
+      typeof body === 'object' && body !== null
+        ? (body as { newApiKey?: unknown }).newApiKey
+        : undefined
 
     if (!newApiKey || typeof newApiKey !== 'string' || newApiKey.trim().length === 0) {
       throw new ApiKeyError('INVALID_FORMAT', 'New API key is required')
