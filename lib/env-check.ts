@@ -48,6 +48,6 @@ export function hasAllRequiredEnvVars(): boolean {
 export const hasEnvVars = !!(
   process.env.V0_API_KEY &&
   process.env.AUTH_SECRET &&
-  process.env.POSTGRES_URL &&
-  process.env.API_KEY_ENCRYPTION_SECRET
+  process.env.POSTGRES_URL?.trim() &&
+  process.env.API_KEY_ENCRYPTION_SECRET?.trim()
 )
