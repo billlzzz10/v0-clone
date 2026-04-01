@@ -138,16 +138,15 @@ export function ApiKeyForm({ onApiKeyChange }: ApiKeyFormProps) {
           {status === 'validating' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {status === 'validating' ? 'Validating...' : 'Validate & Save'}
         </Button>
-        {apiKey && (
-          <Button
-            type="button"
-            variant="destructive"
-            size="icon"
-            onClick={handleDelete}
-            title="Delete API key"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+        <Button
+          type="button"
+          variant="destructive"
+          size="icon"
+          onClick={handleDelete}
+          title="Delete API key"
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
         )}
       </div>
 
