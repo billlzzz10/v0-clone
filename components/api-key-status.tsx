@@ -74,7 +74,9 @@ export function ApiKeyStatus({ refreshTrigger }: ApiKeyStatusProps) {
           )}
         </CardTitle>
         <CardDescription>
-          {status?.hasKey
+          {status === null
+            ? 'Unable to load API key status'
+            : status.hasKey
             ? 'Your API key is configured and ready to use'
             : 'No API key configured yet'}
         </CardDescription>
