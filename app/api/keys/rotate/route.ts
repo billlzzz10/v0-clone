@@ -18,9 +18,11 @@ export async function POST(request: NextRequest) {
 
     const { newApiKey } = await request.json()
 
-    if (!newApiKey || typeof newApiKey !== 'string') {
+    if (!newApiKey || typeof newApiKey !== 'string' || newApiKey.trim().length === 0) {
       throw new ApiKeyError('INVALID_FORMAT', 'New API key is required')
     }
+
+    const normalizedApiKey = newApiKey.trim()
 
     // Check rate limiting
     const rateLimit = checkValidationRateLimit(session.user.id)
@@ -29,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate the new API key
-    const validationResult = await validateApiKeyWithKilogateway(newApiKey)
+    const validationResult = await validateApiKeyWithKilogateway(normalizedApiKey)
 
     if (!validationResult.isValid) {
       logApiKeyError(validationResult.error as any, { userId: session.user.id })
