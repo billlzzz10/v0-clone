@@ -53,10 +53,15 @@ export function ApiKeyForm({ onApiKeyChange }: ApiKeyFormProps) {
     }
   }
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(apiKey)
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 2000)
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(apiKey)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (error) {
+      setStatus('error')
+      setMessage('Failed to copy API key')
+    }
   }
 
   const handleDelete = async () => {
