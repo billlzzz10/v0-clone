@@ -19,12 +19,7 @@ export async function GET(request: NextRequest) {
     const hasValid = await hasValidApiKey(session.user.id)
 
     if (!keyInfo) {
-      return NextResponse.json({
-        hasKey: false,
-        isValid: false,
-        source: null,
-        validatedAt: null,
-        rotationDate: null,
+          throw new ApiKeyError('NOT_FOUND')
       })
     }
 
