@@ -24,12 +24,12 @@ export async function requireAuth() {
 /**
  * Wraps a route handler with error handling
  */
-export function withApiKeyErrorHandler(
-  handler: (request: NextRequest) => Promise<Response>,
+export function withApiKeyErrorHandler<TContext = unknown>(
+  handler: (request: NextRequest, context?: TContext) => Promise<Response>,
 ) {
-  return async (request: NextRequest) => {
+  return async (request: NextRequest, context?: TContext) => {
     try {
-      return await handler(request)
+      return await handler(request, context)
     } catch (error) {
       if (error instanceof ApiKeyError) {
         return error.toResponse()
