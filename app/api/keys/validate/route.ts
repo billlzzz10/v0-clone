@@ -34,24 +34,25 @@ if (trimmedKey.length === 0 || trimmedKey.length > 500) {
     }
 
     // Validate the API key
-    const validationResult = await validateApiKeyWithKilogateway(apiKey)
+// Validate the API key
+const validationResult = await validateApiKeyWithKilogateway(trimmedKey)
 
-    if (!validationResult.isValid) {
-      logApiKeyError(validationResult.error as any, { userId: session.user.id })
-      
-      return NextResponse.json(
-        {
-          success: false,
-          error: validationResult.error,
-          message: validationResult.message,
-          remainingAttempts: rateLimit.remainingAttempts,
-        },
-        { status: 400 },
-      )
-    }
+if (!validationResult.isValid) {
+  logApiKeyError(validationResult.error as any, { userId: session.user.id })
+  
+  return NextResponse.json(
+    {
+      success: false,
+      error: validationResult.error,
+      message: validationResult.message,
+      remainingAttempts: rateLimit.remainingAttempts,
+    },
+    { status: 400 },
+  )
+}
 
-    // Save the API key
-    const saveResult = await saveApiKey(session.user.id, apiKey, 'manual')
+// Save the API key
+const saveResult = await saveApiKey(session.user.id, trimmedKey, 'manual')
 
     if (!saveResult.success) {
       throw new ApiKeyError('DATABASE_ERROR', saveResult.error)
