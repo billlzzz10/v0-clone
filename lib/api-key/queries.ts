@@ -1,4 +1,4 @@
-import { db } from '@/lib/db/connection'
+import db from '@/lib/db/connection'
 import { users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { encryptApiKey, decryptApiKey, hashApiKey } from './encryption'
