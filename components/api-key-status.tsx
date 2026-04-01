@@ -82,7 +82,15 @@ export function ApiKeyStatus({ refreshTrigger }: ApiKeyStatusProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {!status?.hasKey ? (
+        {status === null ? (
+          <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
+            <div className="text-sm text-red-800">
+              <p className="font-medium">Unable to load API key status</p>
+              <p className="text-xs text-red-700">Please refresh the page and try again.</p>
+            </div>
+          </div>
+        ) : !status.hasKey ? (
           <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
             <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0" />
             <div className="text-sm text-amber-800">
