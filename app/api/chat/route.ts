@@ -49,9 +49,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user's API key if authenticated
+    // Get user's API key if authenticated and still valid
     let userApiKey: string | null = null
     if (session?.user?.id) {
+      const isApiKeyValid = await hasValidApiKey(session.user.id)
+      if (isApiKeyValid) {
+        userApiKey = await getApiKey(session.user.id)
+      }
       userApiKey = await getApiKey(session.user.id)
     }
 
