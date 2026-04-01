@@ -63,6 +63,15 @@ export async function POST(request: NextRequest) {
     // Get updated key info
     const keyInfo = await getApiKeyInfo(session.user.id)
 
+    if (!keyInfo) {
+      // Rotation succeeded but failed to fetch updated info - still return success
+      return NextResponse.json({
+        success: true,
+        message: 'API key rotated successfully',
+        keyInfo: null,
+      })
+    }
+
     return NextResponse.json({
       success: true,
       message: 'API key rotated successfully',
