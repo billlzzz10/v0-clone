@@ -59,7 +59,7 @@ export async function getApiKey(userId: string): Promise<string | null> {
     return decryptApiKey(user[0].api_key_encrypted)
   } catch (error) {
     console.error('[API Key] Error retrieving API key:', error)
-    return null
+    throw error instanceof Error ? error : new Error('Failed to retrieve API key')
   }
 }
 
