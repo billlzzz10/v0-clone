@@ -12,6 +12,12 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   email: varchar('email', { length: 64 }).notNull(),
   password: varchar('password', { length: 64 }),
+  // API Key management fields
+  api_key_encrypted: varchar('api_key_encrypted', { length: 512 }), // Encrypted Kilogateway API key
+  api_key_source: varchar('api_key_source', { length: 32 }), // 'kilogateway', 'manual', or null
+  api_key_validated_at: timestamp('api_key_validated_at'), // When key was last validated
+  api_key_rotation_date: timestamp('api_key_rotation_date'), // When key was created/rotated
+  kilogateway_user_id: varchar('kilogateway_user_id', { length: 255 }), // Kilogateway user ID for session linking
   created_at: timestamp('created_at').notNull().defaultNow(),
 })
 
