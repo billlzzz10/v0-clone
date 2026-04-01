@@ -16,11 +16,16 @@ export async function POST(request: NextRequest) {
       throw new ApiKeyError('UNAUTHORIZED')
     }
 
-    const { apiKey } = await request.json()
+const { apiKey } = await request.json()
 
-    if (!apiKey || typeof apiKey !== 'string') {
-      throw new ApiKeyError('INVALID_FORMAT', 'API key is required')
-    }
+if (!apiKey || typeof apiKey !== 'string') {
+  throw new ApiKeyError('INVALID_FORMAT', 'API key is required')
+}
+
+const trimmedKey = apiKey.trim()
+if (trimmedKey.length === 0 || trimmedKey.length > 500) {
+  throw new ApiKeyError('INVALID_FORMAT', 'API key length is invalid')
+}
 
     // Check rate limiting
     const rateLimit = checkValidationRateLimit(session.user.id)
