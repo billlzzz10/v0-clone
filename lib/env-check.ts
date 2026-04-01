@@ -25,6 +25,12 @@ export function checkRequiredEnvVars(): MissingEnvVar[] {
       example: '', // No example - user needs to provide their own
       required: true,
     },
+    {
+      name: 'API_KEY_ENCRYPTION_SECRET',
+      description: 'Secret key for encrypting API keys at rest (32+ characters)',
+      example: 'your-32-character-encryption-secret-key',
+      required: true,
+    },
   ]
 
   const missing = requiredVars.filter((envVar) => {
@@ -42,5 +48,6 @@ export function hasAllRequiredEnvVars(): boolean {
 export const hasEnvVars = !!(
   process.env.V0_API_KEY &&
   process.env.AUTH_SECRET &&
-  process.env.POSTGRES_URL
+  process.env.POSTGRES_URL &&
+  process.env.API_KEY_ENCRYPTION_SECRET
 )

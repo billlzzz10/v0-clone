@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, User, Settings } from 'lucide-react'
 import { Session } from 'next-auth'
 
 interface UserNavProps {
@@ -66,16 +66,25 @@ export function UserNav({ session }: UserNavProps) {
           </>
         )}
         {!isSignedOut && (
-          <DropdownMenuItem
-            onClick={async () => {
-              // Clear any local session data first
-              await signOut({ callbackUrl: '/', redirect: true })
-            }}
-            className="cursor-pointer"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Sign out</span>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem asChild>
+              <a href="/settings" className="cursor-pointer">
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={async () => {
+                // Clear any local session data first
+                await signOut({ callbackUrl: '/', redirect: true })
+              }}
+              className="cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sign out</span>
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
