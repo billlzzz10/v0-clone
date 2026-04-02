@@ -14,10 +14,12 @@ const SALT_LENGTH = 32
  * Derives an encryption key from the master secret using PBKDF2
  */
 function deriveKey(masterSecret: string, salt: Buffer): Buffer {
+function deriveKey(masterSecret: string, salt: Buffer): Buffer {
   if (masterSecret.length < 32) {
     throw new Error('API_KEY_ENCRYPTION_SECRET must be at least 32 characters')
   }
-  return crypto.pbkdf2Sync(masterSecret, salt, 100000, 32, 'sha256')
+
+  return crypto.pbkdf2Sync(masterSecret, salt, 100_000, 32, 'sha256')
 }
 
 /**
