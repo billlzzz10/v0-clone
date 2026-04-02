@@ -17,6 +17,7 @@ function deriveKey(masterSecret: string, salt: Buffer): Buffer {
   if (masterSecret.length < 32) {
     throw new Error('API_KEY_ENCRYPTION_SECRET must be at least 32 characters')
   }
+  return crypto.pbkdf2Sync(masterSecret, salt, 100000, 32, 'sha256')
 }
 
 /**
