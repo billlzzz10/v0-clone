@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
     if (!keyInfo) {
       throw new ApiKeyError('NOT_FOUND')
     }
-    }
+
+    return NextResponse.json({
 
     return NextResponse.json({
       hasKey: !!keyInfo.source,
