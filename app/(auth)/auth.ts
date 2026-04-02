@@ -2,6 +2,7 @@ import { compare } from 'bcrypt-ts'
 import NextAuth, { type DefaultSession } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { createGuestUser, getUser } from '@/lib/db/queries'
+import { getApiKeyInfo } from '@/lib/api-key/queries'
 import { authConfig } from './auth.config'
 import { DUMMY_PASSWORD } from '@/lib/constants'
 import type { DefaultJWT } from 'next-auth/jwt'
@@ -25,6 +26,8 @@ declare module 'next-auth' {
     user: {
       id: string
       type: UserType
+      hasApiKey?: boolean
+      apiKeySource?: 'kilogateway' | 'manual' | null
     } & DefaultSession['user']
   }
 
@@ -32,6 +35,8 @@ declare module 'next-auth' {
     id?: string
     email?: string | null
     type: UserType
+    hasApiKey?: boolean
+    apiKeySource?: 'kilogateway' | 'manual' | null
   }
 }
 
@@ -39,6 +44,8 @@ declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
     id: string
     type: UserType
+    hasApiKey?: boolean
+    apiKeySource?: 'kilogateway' | 'manual' | null
   }
 }
 
@@ -88,6 +95,17 @@ export const {
       if (user) {
         token.id = user.id as string
         token.type = user.type
+
+        // Fetch API key info on login
+        try {
+          const apiKeyInfo = await getApiKeyInfo(user.id as string)
+          token.hasApiKey = !!apiKeyInfo?.source
+          token.apiKeySource = apiKeyInfo?.source || null
+        } catch (error) {
+          console.error('[Auth] Error fetching API key info:', error)
+          token.hasApiKey = false
+          token.apiKeySource = null
+        }
       }
 
       return token
@@ -96,6 +114,8 @@ export const {
       if (session.user) {
         session.user.id = token.id
         session.user.type = token.type
+        session.user.hasApiKey = token.hasApiKey
+        session.user.apiKeySource = token.apiKeySource
       }
 
       return session

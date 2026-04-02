@@ -12,11 +12,13 @@ import {
   anonymousEntitlements,
 } from '@/lib/entitlements'
 import { ChatSDKError } from '@/lib/errors'
+import { getApiKey, updateApiKeyValidation, hasValidApiKey } from '@/lib/api-key/queries'
 
 // Create v0 client with custom baseUrl if V0_API_URL is set
-const v0 = createClient(
-  process.env.V0_API_URL ? { baseUrl: process.env.V0_API_URL } : {},
-)
+function createV0Client() {
+  const clientConfig: any = process.env.V0_API_URL ? { baseUrl: process.env.V0_API_URL } : {}
+  return createClient(clientConfig)
+}
 
 function getClientIP(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
@@ -47,6 +49,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Get user's API key if authenticated and still valid
+    let userApiKey: string | null = null
+    if (session?.user?.id) {
+      const isApiKeyValid = await hasValidApiKey(session.user.id)
+      if (isApiKeyValid) {
+        userApiKey = await getApiKey(session.user.id)
+      }
+    }
+
     // Rate limiting
     if (session?.user?.id) {
       // Authenticated user rate limiting
@@ -65,6 +76,7 @@ export async function POST(request: NextRequest) {
         chatId,
         streaming,
         userId: session.user.id,
+        hasApiKey: !!userApiKey,
       })
     } else {
       // Anonymous user rate limiting
@@ -87,6 +99,12 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Using baseUrl:', process.env.V0_API_URL || 'default')
+
+    // Create v0 client, optionally with user's API key for Kilogateway
+    const v0 = userApiKey ? createClient({
+      baseUrl: process.env.V0_API_URL,
+      apiKey: userApiKey, // Use user's Kilogateway API key if available
+    }) : createV0Client()
 
     let chat
 
@@ -178,6 +196,11 @@ export async function POST(request: NextRequest) {
             userId: session.user.id,
           })
           console.log('Chat ownership created:', chatDetail.id)
+
+          // Update API key validation timestamp if user has one
+          if (userApiKey) {
+            await updateApiKeyValidation(session.user.id)
+          }
         } else {
           // Anonymous user - log for rate limiting
           const clientIP = getClientIP(request)
