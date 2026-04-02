@@ -132,7 +132,7 @@ export function ApiKeyForm({ onApiKeyChange }: ApiKeyFormProps) {
       <div className="flex gap-2">
         <Button
           onClick={handleValidate}
-          disabled={!apiKey || status === 'validating'}
+          disabled={!apiKey.trim() || status === 'validating'}
           className="flex-1"
         >
           {status === 'validating' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
