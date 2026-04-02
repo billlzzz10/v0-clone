@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
     const hasValid = await hasValidApiKey(session.user.id)
 
     if (!keyInfo) {
-          throw new ApiKeyError('NOT_FOUND')
-      })
+      throw new ApiKeyError('NOT_FOUND')
+    }
     }
 
     return NextResponse.json({
